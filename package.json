@@ -1,7 +1,7 @@
 {
   "name": "webgl-nextjs",
   "version": "1.0.4",
-  "description": "render your unity webgl apps in nextjs",
+  "description": "Add your unity webgl apps to nextjs projects",
   "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +11,7 @@
   "keywords": [
     "unity",
     "react",
-    "next",
+    "next.js",
     "webgl"
   ],
   "repository": {
@@ -19,7 +19,7 @@
     "url": "https://github.com/Multi-Sync/webgl-nextjs"
   },
   "author": "MultiSync Inc.",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@babel/cli": "^7.6.4",
     "@babel/preset-env": "^7.22.5",
