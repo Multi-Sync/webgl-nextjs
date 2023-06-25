@@ -110,8 +110,8 @@ mergeInto(LibraryManager.library, {
         // This method can be called from Unity to send messages to JS.
 
         // Convert pointer to string.
-        var messageTypeStr = Pointer_stringify(messageType);
-        var messageContentStr = Pointer_stringify(messageContent);
+        var messageTypeStr = UTF8ToString(messageType);
+        var messageContentStr = UTF8ToString(messageContent);
 
         // Forward the message to your nextjs app or handle it here.
         console.log(`Received message of type ${messageTypeStr}: ${messageContentStr}`);
@@ -122,7 +122,6 @@ mergeInto(LibraryManager.library, {
         SendMessage('HandleJSMessages', 'ReceiveMessage', `${messageType}\n${messageContent}`);
     }
 });
-
 ```
 
 ##### Receiving and Sending messages from Unity to NextJS
@@ -131,16 +130,19 @@ mergeInto(LibraryManager.library, {
 - In your Unity Project, create a game object called  `HandleJSMessages` and  the following script to `HandleJSMessages` gameobject.
 
 ```csharp
-
 using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class HandleJSMessages : MonoBehaviour
 {
+    [System.Obsolete]
     private void Awake()
     {
-        Debug.Log("HandleJSMessages Activated");//look for this message in the browser to ensure its working, delete before production
-        DontDestroyOnLoad(this);
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            Debug.Log("HandleJSMessages Activated");//look for this message in the browser to ensure its working, delete before production
+            DontDestroyOnLoad(this);
+        }
     }
 
     [DllImport("__Internal")]
@@ -151,30 +153,38 @@ public class HandleJSMessages : MonoBehaviour
     /// </summary>
     /// <param name="type">any type you want</param>
     /// <param name="content">the content for the message</param>
+    [System.Obsolete]
     public void SendToJS(string type, string content)
     {
-        SendMessageToJS(type, content);
+        string message = type + ":" + content;
+        Application.ExternalCall("SendMessageToJS", message);
     }
 
     /// <summary>
     /// Receive message from the nextjs app that has webgl-nextjs package
     /// </summary>
     /// <param name="message"></param>
+    [System.Obsolete]
     public void ReceiveMessage(string message)
     {
-        Debug.Log("Received message");
         var parts = message.Split('\n');//type\ncontent
         var type = parts[0];
         var content = parts[1];
-
         // Handle the message here. This will be called from JS.
         Debug.Log($"Received message of type {type}: {content}");//look for this message in the browser to ensure its working, delete before production
 
         //Some Logic ...
+        switch(type)
+        {
+            case "nextjs-request":
+                SendToJS("unity-response", "Ahmed");//send message to nextjs
+                break;
+            default:
+                Debug.Log($"received unknown type message {type}");
+                break;
+        }
     }
 }
-
-
 ```
 
 ##### Receiving and Sending messages from NextJS to Unity 
@@ -203,35 +213,42 @@ import React, { useRef } from 'react';
 export default function TestMePage() {
   const webGLRef = useRef(null);
 
-  const onMessage = (type, content) => {
-    console.log(`Received message of type ${type}: ${content}`);// you should see in chrome console
-  };
-  const onLoaded = () => {
-    webGLRef.current.sendMessage('MyMessageType', 'Hello, Unity!');// you should see in chrome console
-    console.log(`Loaded`);
+  var buildUrl = "./Build"; //replace with your CDN
+  let config = {
+    id: "unity-container",
+    dataUrl: buildUrl + "/test-webgl.data",//replace with your build file name
+    frameworkUrl: buildUrl + "/test-webgl.framework.js",//replace with your build file name
+    codeUrl: buildUrl + "/test-webgl.wasm",//replace with your build file name
+    loaderUrl: buildUrl + "/test-webgl.loader.js",//replace with your build file name
   };
 
-  var buildUrl = "https://storage.googleapis.com/multisync/multisync/app-builds"; //replace with your CDN
-  let config = {
-    dataUrl: buildUrl + "/webgl-test-js.data",//replace with your build file name
-    frameworkUrl: buildUrl + "/webgl-test-js.framework.js",//replace with your build file name
-    codeUrl: buildUrl + "/webgl-test-js.wasm",//replace with your build file name
-    streamingAssetsUrl: "StreamingAssets",//replace with StreamingAssets path
-    loaderUrl: buildUrl + "/webgl-test-js.loader.js",//replace with your build file name
+  const onLoaded = () => {
+    console.log(`UnityWebGL Loaded`);
+    webGLRef.current.sendMessage('nextjs-request', 'send me your name');
   };
+
+  const onMessage = (message) => {
+    console.log('Received message from Unity,  message: ' + message);
+    const type = message.split(':')[0];
+    const content = message.split(':')[1];
+    console.log('type: ' + type + ' content: ' + content);
+    switch (type) {
+      case "unity-response":
+        console.log(`name received:${content}`);
+        break;
+    }
+  }
 
   return (
-    <>
-      <WebGL
-        ref={webGLRef}
-        config={config}
-        onLoaded={onLoaded}
-        onMessage={onMessage}
-        style={{ width: '100%', height: '100%', position: 'relative' }}
-      />
-    </>
+    <WebGL
+      config={config}
+      onLoaded={onLoaded}
+      onMessage={onMessage}
+      style={{ width: '100%', height: '100%', position: 'relative' }}
+      ref={webGLRef}
+    />
   )
-};
+}
 ```
 
 ## Support:

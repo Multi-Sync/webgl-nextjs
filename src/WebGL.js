@@ -8,10 +8,11 @@ import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react
  */
 const WebGL = ({ config, onLoaded, onMessage, style }, ref) => {
   const unityContainerRef = useRef(null);
-  let unityInstance = null;
+  const unityInstanceRef = useRef(null);
 
   useEffect(() => {
     const canvas = document.createElement("canvas");
+    canvas.id = config.id;
     canvas.style.display = "block";
     canvas.style.width = "100%";
     canvas.style.height = "100%";
@@ -22,15 +23,17 @@ const WebGL = ({ config, onLoaded, onMessage, style }, ref) => {
     script.src = config.loaderUrl;
     script.onload = () => {
       createUnityInstance(canvas, config, (progress) => {
+        //Todo track progress here
         if (progress === 1) {
           // Trigger the callback prop once the application is loaded.
-          onLoaded();
+          //Todo for tracking end of progress
         }
       })
         .then((instance) => {
-          // unityInstance.SetFullscreen(1); //for full screen option
-          // sendDataToUnity(unityInstance);
-          unityInstance = instance;
+          if (instance) {
+            unityInstanceRef.current = instance;
+            onLoaded();
+          }
         })
         .catch((message) => {
           alert(message);
@@ -53,8 +56,11 @@ const WebGL = ({ config, onLoaded, onMessage, style }, ref) => {
   useImperativeHandle(ref, () => ({
     sendMessage: (type, content) => {
       // Use unityInstance to send a message to Unity
-      if (unityInstance) {
-        unityInstance.SendMessage('HandleJSMessages', 'ReceiveMessage', `${type}\n${content}`);
+      if (unityInstanceRef && unityInstanceRef.current) {
+        unityInstanceRef.current.SendMessage('HandleJSMessages', 'ReceiveMessage', `${type}\n${content}`);
+      }
+      else {
+        console.error("unityInstanceRef is null, send messages after OnLoaded callback");
       }
     },
   }));
