@@ -1,12 +1,17 @@
 import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
-
+/**
+ * @param  {} config unity loader config, see examples on readme at https://github.com/Multi-Sync/webgl-nextjs
+ * @param  {} onLoaded callback function to be called when unity application is loaded
+ * @param  {} onMessage callback function to be called when unity application sends a message to JS layer
+ * @param  {} style style object to be applied to the unity container
+ * @param  {} ref reference to the unity container
+ */
 const WebGL = ({ config, onLoaded, onMessage, style }, ref) => {
   const unityContainerRef = useRef(null);
   let unityInstance = null;
 
   useEffect(() => {
     const canvas = document.createElement("canvas");
-    canvas.id = config.id;
     canvas.style.display = "block";
     canvas.style.width = "100%";
     canvas.style.height = "100%";
@@ -53,7 +58,6 @@ const WebGL = ({ config, onLoaded, onMessage, style }, ref) => {
       }
     },
   }));
-
 
   return (
     <div ref={unityContainerRef} style={style}>

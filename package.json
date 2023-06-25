@@ -1,6 +1,6 @@
 {
   "name": "webgl-nextjs",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "render your unity webgl apps in nextjs",
   "main": "./lib/index.js",
   "scripts": {
