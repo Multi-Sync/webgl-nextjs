@@ -1,4 +1,4 @@
-# Render your unity webgl apps in next.js projects
+# Add your Unity WebGL apps to next.js projects
 
 
 ## System Requirements:
@@ -92,6 +92,8 @@ export default function TestMePage() {
   };
 ```
 #### Messaging between JS and Unity
+<img width="566" alt="Screenshot 2023-06-24 at 9 56 48 PM" src="https://github.com/Multi-Sync/webgl-nextjs/assets/24863504/fb1fddef-76bc-46e4-9c34-0d71db2cf1de">
+
 - In your Unity project, create Plugins folders ```(Assets/Plugins)``` and add protocol.jslib.
 
 
@@ -119,6 +121,8 @@ mergeInto(LibraryManager.library, {
 ```
 
 ##### Receiving and Sending messages from Unity to NextJS
+
+
 - In your Unity Project, create a game object called  `HandleJSMessages` and  the following script to `HandleJSMessages` gameobject.
 
 ```csharp
