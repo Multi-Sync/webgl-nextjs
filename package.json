@@ -1,11 +1,12 @@
 {
   "name": "webgl-nextjs",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "render your unity webgl apps in nextjs",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --out-dir lib"
+    "build": "babel src --out-dir lib",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "unity",
@@ -21,8 +22,8 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.6.4",
-    "@babel/preset-env": "^7.15.6",
-    "@babel/preset-react": "^7.14.5"
+    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-react": "^7.22.5"
   },
   "babel": {
     "presets": [
