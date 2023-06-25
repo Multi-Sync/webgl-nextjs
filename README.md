@@ -1,4 +1,9 @@
 # Add your Unity WebGL apps to next.js projects
+![NPM](https://img.shields.io/npm/l/webgl-nextjs)
+![npm](https://img.shields.io/npm/v/webgl-nextjs)
+ <a href="https://discord.gg/YHmsekzMV5">
+<img src="https://img.shields.io/discord/779074183551385620?logo=discord" alt="chat on Discord">
+</a>
 
 
 ## System Requirements:
@@ -229,3 +234,6 @@ export default function TestMePage() {
 };
 ```
 
+## Support:
+- Email: contact@multisync.io
+- Discord: https://discord.gg/YHmsekzMV5
