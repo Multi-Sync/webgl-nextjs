@@ -19,13 +19,15 @@ In your terminal/git-bash run the following commands
 ```bash
 npx create-next-app@latest
 ```
-
-2. Install webgl-nextjs package to your project
+>  Accept all the default options and open your next.js project in a code editor
+2. Install webgl-nextjs package to your project 
+>  change directory to the root of your new next.js project and run the following command:
 ```bash
 npm i webgl-nextjs
 ```
 
-3. Create a new ```pages``` directory in your next project -if it wasn't generated-, create a new file at ./pages/test.js and copy and paste the following code.
+3. Create a new ```pages``` directory in your next project -if it wasn't generated-,
+in the `pages` directory create a new file `test.js` and copy and paste the following code.
 
 ```javascript
 //filename: /pages/test.js
@@ -54,8 +56,15 @@ export default function TestMePage() {
   )
 }
 ```
-4. You should see this in your browser under http://localhost:3000/test 
-<img width="1496" alt="Screenshot 2023-06-24 at 9 13 28 PM" src="https://github.com/Multi-Sync/webgl-nextjs/assets/24863504/b9e56879-06dc-492d-800a-3ba948780d68">
+4. In your terminal run 
+```bash
+ npm run dev 
+ ```
+
+You should see this in your browser under http://localhost:3000/test 
+<img width="1496" alt="Next.js project running unity WebGL app" src="https://github.com/Multi-Sync/webgl-nextjs/assets/24863504/d1ee0b4d-834a-409b-9ce9-5dfc6a112194">
+
+
 
 🥳 You just added WebGL game/app to the next project 🥳
 
@@ -97,7 +106,7 @@ export default function TestMePage() {
   };
 ```
 #### Messaging between JS and Unity
-<img width="566" alt="Screenshot 2023-06-24 at 9 56 48 PM" src="https://github.com/Multi-Sync/webgl-nextjs/assets/24863504/fb1fddef-76bc-46e4-9c34-0d71db2cf1de">
+<img width="566" alt="Messaging between JS and Unity" src="https://github.com/Multi-Sync/webgl-nextjs/assets/24863504/b20cea38-a97a-4b59-a66e-b565e3264d99">
 
 - In your Unity project, create Plugins folders ```(Assets/Plugins)``` and add protocol.jslib.
 
