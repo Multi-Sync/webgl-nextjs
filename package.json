@@ -1,6 +1,6 @@
 {
   "name": "webgl-nextjs",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Add your unity webgl apps to nextjs projects",
   "main": "./lib/index.js",
   "scripts": {
